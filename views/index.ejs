@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Crypto Portfolio Checker</title>
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <fieldset>
+      <form action="/" method="post">
+        <input type="text" id="symbol" name="symbol" class="ghost-input" placeholder="Crypto Symbol (ex: bitcoin = 'btc')" required>
+        <input type="text" id="amount" name="amount" class="ghost-input" placeholder="Enter the amount of this crypto you own" required>
+        <input type="submit" class="ghost-button" value="Add Crypto">
+      </form>
+    </fieldset>
+    <% if (typeof cryptos == 'object' && cryptos) { %>
+    <table>
+      <tr>
+        <th>Symbol</th>
+        <th>Amount Owned</th>
+        <th>Value USD</th>
+        <th>Total Owned USD</th>
+      </tr>
+      <% for(let [symbol, attrs] of Object.entries(cryptos.cryptos)) { %>
+      <tr>
+        <th><%= symbol %></th>
+        <td><%= attrs.amount %></td>
+        <td>$<%= attrs.value %></td>
+        <td>$<%= attrs.cTotal %></td>
+      </tr>
+      <% } %>
+      <tr>
+        <th>PORTFOLIO TOTAL:</th>
+        <td>$<%= cryptos.pTotal %></td>
+      </tr>
+    </table>
+    <% } %>
+    <% if (typeof error == 'Object' && error) { %>
+      <p><%= error %></p>
+    <% } %>
+  </body>
+</html>
