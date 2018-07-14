@@ -12,14 +12,14 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-  res.render('index');
+  res.render('index', {cryptos: ownedSymbols, error: null});
 });
 
 app.post('/', (req, res) => {
   let symbol = req.body.symbol.toUpperCase();
   if(ownedSymbols.cryptos[symbol]){
     console.log("You've already added this crypto");
-    return;
+    res.render('index', {cryptos: ownedSymbols, error: 'You\'ve already added this crypto to your portfolio'});
   } else {
     ownedSymbols.cryptos[symbol] = {amount: null, value: null, cTotal: null}
     ownedSymbols.cryptos[symbol].amount = req.body.amount;
@@ -37,7 +37,7 @@ app.post('/', (req, res) => {
             ownedSymbols.pTotal += ownedSymbols.cryptos[symbol].cTotal;
           }
         }
-        ownedSymbols["pTotal"] = Number(Math.round(ownedSymbols["pTotal"]+'e2')+"e-2");
+        ownedSymbols["pTotal"] = ownedSymbols["pTotal"].toFixed(2);
         res.render('index', {cryptos: ownedSymbols, error: null});
       }
       else {
